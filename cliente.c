@@ -16,18 +16,17 @@
 #define SIZE 255
 #define MENU_1 "1.Hacer recervacion\n2.Verificar cupo\n3.Salir\nSeleccione una respuesta: "
 
-struct strings {
-    char menu_1;
-    char menu_2;
-    char platillos[10][100];
-} menu;
+struct menu  {
+    char *menu_1;
+    char *menu_2;
+};
 int main(){
 
     //Define variables
+    struct menu menu;
     int server_fd, tam, res;
     struct sockaddr_in server;
     char buffer[SIZE];
-    char menu[0][100];
     // define the struct
     server.sin_family = AF_INET;
     server.sin_port = htons(PORT);
@@ -54,6 +53,5 @@ int main(){
 
     recv(server_fd,buffer,sizeof(buffer),0);
     printf("%s",buffer);
-
     close(server_fd);
 }

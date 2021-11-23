@@ -21,11 +21,10 @@ bool verificarCupo(bool mesas[]);
 int asignarMesa(bool mesas[]);
 void comprarComida(int client_fd,int res);
 
+
 int main(){
 
-    //Define variables
-    //char platillos = "platillo_1\nplatillo_2\nplatillo_3\nplatillo_4\nplatillo_5\nplatillo_6\nplatillo_7\nplatillo_8\nplatillo_9\nplatillo_10\n";
-    char menus[][20] = {"carnes","vegetariano","mariscos"};
+    // char menus[][20] = {"carnes","vegetariano","mariscos"};
     int server_fd, client_fd, len_in = 0,len_out = 0,len,i,mesa;
     struct sockaddr_in server, client;
     char buffer_in[SIZE];
