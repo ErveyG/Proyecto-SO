@@ -12,31 +12,48 @@
 
 //Constants
 #define PORT 2001
-#define IP "10.0.2.15"
+#define IP "127.0.0.1"
 #define SIZE 255
+#define MENU_1 "1.Hacer recervacion\n2.Verificar cupo\n3.Salir\nSeleccione una respuesta: "
 
+struct strings {
+    char menu_1;
+    char menu_2;
+    char platillos[10][100];
+} menu;
 int main(){
-    int serverfd, tam , numBytes;
-    char buf[SIZE];
-    struct sockaddr_in server;
 
-    //Server direcction
+    //Define variables
+    int server_fd, tam, res;
+    struct sockaddr_in server;
+    char buffer[SIZE];
+    char menu[0][100];
+    // define the struct
     server.sin_family = AF_INET;
     server.sin_port = htons(PORT);
-    inet_aton(IP,&(server.sin_addr));
-    memset(&(server.sin_zero),'\0',8);
+    inet_pton(AF_INET,IP,&(server.sin_addr));
+    memset( &(server.sin_zero), '\0', 8 );
 
-    serverfd = socket(AF_INET, SOCK_STREAM, 0);
+    //Create to socket
+    server_fd = socket(AF_INET, SOCK_STREAM, 0);
+    if(server_fd < 0){
+        perror("socket");
+        exit(1);
+    }
 
-    tam = sizeof(struct sockaddr);
+    tam = sizeof(struct sockaddr_in);
 
-    connect(serverfd, (struct sockaddr*)&server, tam);
+    connect(server_fd,(struct sockaddr*)&server,tam);
+    //Logical procesedure
+    recv(server_fd, buffer,sizeof(buffer),0);
+    printf("%s", buffer);
+    printf("%s",MENU_1);
 
-    numBytes = recv(serverfd, buf, SIZE - 1, 0);
+    scanf("%d",&res);
+    send(server_fd,&res,sizeof(res),0);
 
-    buf[numBytes] = '\0';
+    recv(server_fd,buffer,sizeof(buffer),0);
+    printf("%s",buffer);
 
-    printf("%d bytes recibidos\n", numBytes);
-    printf("Recibido: %s\n", buf);
-    close(serverfd);
+    close(server_fd);
 }
